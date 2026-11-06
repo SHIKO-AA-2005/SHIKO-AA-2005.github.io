@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEO青春グラフィティ — 二度目の成人式 — 問合せ窓口</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Noto Sans JP & Noto Serif JP -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&display=swap"
+    rel="stylesheet"
+  />
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans JP"', '"Inter"', 'sans-serif'],
+            serif: ['"Noto Serif JP"', 'serif'],
+            display: ['"Inter"', '"Noto Sans JP"', 'sans-serif'],
+          },
+          colors: {
+            navy: {
+              950: '#090e1a',
+              900: '#0f172a',
+              800: '#1e293b',
+              700: '#334155',
+            },
+            gold: {
+              300: '#fde68a',
+              400: '#fbbf24',
+              500: '#d4af37',
+              600: '#b45309',
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    /* カスタムスクロールバー & アニメーション */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.35);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(212, 175, 55, 0.6);
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .msg-animate {
+      animation: fadeSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes pulseDot {
+      0%, 80%, 100% {
+        transform: scale(0.6);
+        opacity: 0.4;
+      }
+      40% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .typing-dot {
+      animation: pulseDot 1.3s infinite ease-in-out both;
+    }
+    .typing-dot:nth-child(1) {
+      animation-delay: -0.32s;
+    }
+    .typing-dot:nth-child(2) {
+      animation-delay: -0.16s;
+    }
+
+    .gold-gradient-border {
+      background: linear-gradient(135deg, #d4af37 0%, #fde68a 50%, #b45309 100%);
+    }
+  </style>
+</head>
+<body class="bg-navy-950 text-slate-100 min-h-screen flex flex-col items-center justify-center sm:p-4 selection:bg-gold-500 selection:text-navy-900">
+
+  <!-- メインアプリコンテナ（スマホ幅〜タブレットで最も美しく見えるレスポンシブ設計） -->
+  <div class="w-full max-w-xl h-[100dvh] sm:h-[88vh] sm:max-h-[820px] bg-navy-900 sm:rounded-3xl sm:border sm:border-slate-700/70 sm:shadow-2xl flex flex-col overflow-hidden relative">
+
+    <!-- ヘッダー -->
+    <header class="bg-gradient-to-r from-navy-950 via-navy-900 to-navy-950 border-b border-gold-500/30 px-4 py-3.5 sm:px-5 flex items-center justify-between shrink-0 z-10">
+      <div class="flex items-center gap-3 min-w-0">
+        <!-- エンブレムアイコン -->
+        <div class="w-10 h-10 rounded-2xl gold-gradient-border p-[1.5px] shrink-0 shadow-lg shadow-gold-500/10">
+          <div class="w-full h-full bg-navy-950 rounded-[14px] flex flex-col items-center justify-center leading-none">
+            <span class="text-[9px] font-bold tracking-widest text-gold-400">40TH</span>
+            <span class="text-[11px] font-serif font-bold text-white mt-0.5">四高</span>
+          </div>
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5">
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <p class="text-[10px] sm:text-[11px] font-medium tracking-wider text-gold-400 truncate">
+              三重県立四日市高等学校 平成16年度卒 同窓会
+            </p>
+          </div>
+          <h1 class="text-sm sm:text-base font-bold tracking-wide text-white truncate mt-0.5">
+            NEO青春グラフィティ <span class="text-gold-400 font-serif font-semibold">— 二度目の成人式 —</span>
+          </h1>
+        </div>
+      </div>
+
+      <!-- アクションボタン（リセット・幹事設定） -->
+      <div class="flex items-center gap-1.5 shrink-0 ml-2">
+        <button
+          id="resetChatBtn"
+          type="button"
+          title="会話を最初に戻す"
+          class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-navy-800 transition-colors"
+        >
+          <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+        </button>
+        <button
+          id="openAdminBtn"
+          type="button"
+          title="幹事用設定・受信ボックス"
+          class="relative p-2 rounded-xl text-gold-400 hover:text-gold-300 bg-navy-800/80 hover:bg-navy-800 border border-gold-500/30 transition-all flex items-center gap-1.5 text-xs font-medium px-2.5"
+        >
+          <i data-lucide="settings" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">幹事設定</span>
+          <span id="inquiryBadge" class="hidden absolute -top-1.5 -right-1.5 bg-amber-500 text-navy-950 text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- チャットメッセージ表示エリア -->
+    <main id="chatContainer" class="flex-1 overflow-y-auto px-4 py-5 space-y-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-navy-800/40 via-navy-900 to-navy-950">
+      <!-- JavaScriptで動的にメッセージが挿入されます -->
+    </main>
+
+    <!-- クイック質問チップ（横スクロール対応） -->
+    <div class="bg-navy-900/95 border-t border-slate-800/80 px-3 pt-2.5 pb-1.5 shrink-0">
+      <div class="flex items-center justify-between px-1 mb-1.5">
+        <span class="text-[11px] text-slate-400 flex items-center gap-1">
+          <i data-lucide="sparkles" class="w-3 h-3 text-gold-400"></i>
+          よくある質問をタップして確認
+        </span>
+      </div>
+      <div id="quickChipsContainer" class="flex gap-2 overflow-x-auto pb-1.5 no-scrollbar">
+        <!-- JavaScriptでチップを描画 -->
+      </div>
+    </div>
+
+    <!-- テキスト入力フォーム -->
+    <footer class="bg-navy-950 border-t border-slate-800 p-3 sm:px-4 sm:py-3.5 shrink-0">
+      <form id="chatForm" class="flex items-center gap-2">
+        <div class="relative flex-1">
+          <input
+            id="userInput"
+            type="text"
+            autocomplete="off"
+            placeholder="質問を入力（例：一人参加でも大丈夫？駐車場は？）"
+            class="w-full bg-navy-800/90 text-white placeholder-slate-400 text-sm rounded-2xl pl-4 pr-10 py-3 border border-slate-700/80 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/50 transition-all"
+          />
+        </div>
+        <button
+          id="sendBtn"
+          type="submit"
+          aria-label="送信"
+          class="bg-gradient-to-r from-gold-500 to-amber-500 hover:from-gold-400 hover:to-amber-400 text-navy-950 font-bold p-3 rounded-2xl shadow-lg shadow-gold-500/20 active:scale-95 transition-all shrink-0 flex items-center justify-center"
+        >
+          <i data-lucide="send" class="w-4 h-4"></i>
+        </button>
+      </form>
+      <p class="text-[10px] text-slate-500 text-center mt-2">
+        NEO青春グラフィティ 実行委員会 コンシェルジュBot（AI自動応答対応）
+      </p>
+    </footer>
+
+    <!-- ==========================================
+         幹事用設定 & 受信メッセージ管理モーダル
+    =========================================== -->
+    <div id="adminModal" class="hidden fixed inset-0 z-50 bg-navy-950/85 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5">
+      <div class="bg-navy-900 border border-slate-700 w-full max-w-lg max-h-[90dvh] rounded-3xl shadow-2xl flex flex-col overflow-hidden msg-animate">
+        <!-- モーダルヘッダー -->
+        <div class="px-5 py-4 border-b border-slate-800 flex items-center justify-between bg-navy-950">
+          <div class="flex items-center gap-2">
+            <i data-lucide="shield-check" class="w-5 h-5 text-gold-400"></i>
+            <h2 class="font-bold text-base text-white">幹事用コントロールパネル</h2>
+          </div>
+          <button id="closeAdminBtn" type="button" class="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-navy-800">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- タブ切り替え -->
+        <div class="flex border-b border-slate-800 bg-navy-950/60 px-4 pt-2 gap-2">
+          <button
+            type="button"
+            data-tab="settings"
+            class="admin-tab active-tab px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 border-gold-400 text-gold-400 transition-colors"
+          >
+            開催情報の編集
+          </button>
+          <button
+            type="button"
+            data-tab="inquiries"
+            class="admin-tab px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1.5"
+          >
+            個別問合せ一覧
+            <span id="modalInquiryCount" class="bg-navy-800 text-gold-400 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
+          </button>
+          <button
+            type="button"
+            data-tab="share"
+            class="admin-tab px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-colors"
+          >
+            LINE共有文
+          </button>
+        </div>
+
+        <!-- タブコンテンツ1: 開催情報の編集 -->
+        <div id="tab-settings" class="admin-panel p-5 overflow-y-auto space-y-4 text-sm flex-1">
+          <p class="text-xs text-slate-300 bg-navy-800/80 border border-slate-700/70 rounded-xl p-3 leading-relaxed">
+            ここで入力した内容はチャットボットの自動回答やAIコンシェルジュの知識ベースに即時反映されます。
+          </p>
+
+          <div>
+            <label class="block text-xs font-bold text-gold-400 mb-1">開催日時</label>
+            <input id="cfgDateTime" type="text" class="w-full bg-navy-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:border-gold-500 focus:outline-none" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gold-400 mb-1">会場名・アクセス</label>
+            <input id="cfgVenue" type="text" class="w-full bg-navy-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:border-gold-500 focus:outline-none" />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-gold-400 mb-1">参加費（会費）</label>
+              <input id="cfgFee" type="text" class="w-full bg-navy-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:border-gold-500 focus:outline-none" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gold-400 mb-1">出欠回答の締切日</label>
+              <input id="cfgDeadline" type="text" class="w-full bg-navy-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:border-gold-500 focus:outline-none" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gold-400 mb-1">出欠フォームURL（任意）</label>
+            <input id="cfgRsvpUrl" type="text" placeholder="https://..." class="w-full bg-navy-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:border-gold-500 focus:outline-none" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gold-400 mb-1">二次会・その他補足事項（AI回答にも反映）</label>
+            <textarea id="cfgNotes" rows="3" class="w-full bg-navy-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:border-gold-500 focus:outline-none"></textarea>
+          </div>
+
+          <div class="pt-2 flex items-center justify-end gap-2">
+            <button id="resetConfigBtn" type="button" class="px-3.5 py-2 rounded-xl text-xs text-slate-400 hover:text-white hover:bg-navy-800 transition-colors">
+              初期値に戻す
+            </button>
+            <button id="saveConfigBtn" type="button" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-gold-500 to-amber-500 text-navy-950 shadow-md hover:opacity-95 transition-all">
+              設定を保存して反映
+            </button>
+          </div>
+        </div>
+
+        <!-- タブコンテンツ2: 個別問合せ一覧 -->
+        <div id="tab-inquiries" class="admin-panel hidden p-5 overflow-y-auto space-y-3 text-sm flex-1">
+          <div class="flex items-center justify-between">
+            <p class="text-xs text-slate-400">同級生から送信された個別メッセージ履歴</p>
+            <button id="clearInquiriesBtn" type="button" class="text-[11px] text-rose-400 hover:underline">
+              履歴をすべて削除
+            </button>
+          </div>
+          <div id="inquiryListContainer" class="space-y-3">
+            <!-- JSで描画 -->
+          </div>
+        </div>
+
+        <!-- タブコンテンツ3: LINE共有用案内テキスト -->
+        <div id="tab-share" class="admin-panel hidden p-5 overflow-y-auto space-y-4 text-sm flex-1">
+          <p class="text-xs text-slate-300 leading-relaxed">
+            同級生のLINEグループやSNSに貼り付けて使える案内文です。チャットボットのURLとあわせてご活用ください。
+          </p>
+          <textarea id="shareTextArea" rows="9" readonly class="w-full bg-navy-950 border border-slate-700 rounded-2xl p-3.5 text-xs text-slate-200 leading-relaxed focus:outline-none"></textarea>
+          <button id="copyShareBtn" type="button" class="w-full py-3 rounded-xl font-bold text-xs bg-navy-800 hover:bg-navy-700 text-gold-400 border border-gold-500/40 flex items-center justify-center gap-2 transition-all">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+            <span>案内文をクリップボードにコピー</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- トースト通知（alert代替） -->
+    <div id="toast" class="pointer-events-none opacity-0 transition-opacity duration-300 fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-navy-800 text-white border border-gold-500/50 px-4 py-2.5 rounded-full shadow-xl text-xs font-medium flex items-center gap-2">
+      <i data-lucide="check-circle-2" class="w-4 h-4 text-gold-400"></i>
+      <span id="toastMessage">保存しました</span>
+    </div>
+
+  </div>
+
+  <script>
+    /**
+     * NEO青春グラフィティ — 二度目の成人式 —
+     * 三重県立四日市高等学校 平成16年度卒 同窓会 問合せチャットボット
+     */
+
+    // ==========================================
+    // 1. デフォルト開催設定（localStorageで上書き可能）
+    // ==========================================
+    const DEFAULT_CONFIG = {
+      dateTime: '【要設定】2027年〇月〇日（土） 18:00 開宴予定（受付 17:30〜）',
+      venue: '【要設定】四日市市内ホテル・バンケット会場（近鉄四日市駅より徒歩圏内）',
+      fee: '【要設定】8,000円〜10,000円前後を調整中（当日受付にて現金またはPayPay予定）',
+      deadline: '【要設定】開催日の1ヶ月前まで（変更・キャンセルは開催3日前まで対応）',
+      rsvpUrl: '（現在準備中・決まり次第こちらに表示されます）',
+      notes: '100名規模の立食〜着席ビュッフェスタイルを予定。同会場または近鉄四日市駅周辺で二次会も企画中です。恩師の先生方にもお声がけを進めています。',
+    };
+
+    const STORAGE_KEY_CONFIG = 'yonko_reunion_config_v1';
+    const STORAGE_KEY_INQUIRIES = 'yonko_reunion_inquiries_v1';
+
+    let eventConfig = loadConfig();
+    let inquiries = loadInquiries();
+    let conversationHistory = [];
+    let isWaitingResponse = false;
+
+    function loadConfig() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY_CONFIG);
+        return saved ? { ...DEFAULT_CONFIG, ...JSON.parse(saved) } : { ...DEFAULT_CONFIG };
+      } catch (e) {
+        return { ...DEFAULT_CONFIG };
+      }
+    }
+
+    function saveConfig(newConfig) {
+      eventConfig = { ...newConfig };
+      try {
+        localStorage.setItem(STORAGE_KEY_CONFIG, JSON.stringify(eventConfig));
+      } catch (e) {
+        // ストレージ制限時はメモリ上で保持
+      }
+    }
+
+    function loadInquiries() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY_INQUIRIES);
+        return saved ? JSON.parse(saved) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveInquiries(list) {
+      inquiries = list;
+      try {
+        localStorage.setItem(STORAGE_KEY_INQUIRIES, JSON.stringify(inquiries));
+      } catch (e) {}
+      updateInquiryBadge();
+    }
+
+    // ==========================================
+    // 2. クイック質問チップ & 組み込みFAQロジック
+    // ==========================================
+    const QUICK_CHIPS = [
+      { id: 'datetime_venue', label: '開催日時・場所について', icon: 'calendar-map' },
+      { id: 'fee_payment', label: '参加費・支払い方法', icon: 'wallet' },
+      { id: 'dress_code', label: '服装（ドレスコード）', icon: 'shirt' },
+      { id: 'kids_afterparty', label: '子連れ・二次会について', icon: 'users' },
+      { id: 'rsvp_deadline', label: '出欠回答の期限・変更', icon: 'clock' },
+      { id: 'direct_message', label: '幹事へ直接メッセージを送る', icon: 'mail' },
+    ];
+
+    function getFaqResponseById(id) {
+      switch (id) {
+        case 'datetime_venue':
+          return `**【開催日時・会場のご案内】**\n\n` +
+            `■ **日時**：${eventConfig.dateTime}\n` +
+            `■ **会場**：${eventConfig.venue}\n\n` +
+            `近鉄四日市駅からのアクセスが良い会場を選定しています。遠方から帰省される方も安心してご参加いただけます！`;
+
+        case 'fee_payment':
+          return `**【参加費・お支払い方法】**\n\n` +
+            `■ **会費目安**：${eventConfig.fee}\n\n` +
+            `お食事・フリードリンク代を含みます。正式な金額と決済方法（当日現金・キャッシュレス等）は本案内にて確定次第お知らせいたします。`;
+
+        case 'dress_code':
+          return `**【服装（ドレスコード）について】**\n\n` +
+            `テーマは「**二度目の成人式**」ですが、カチッとしすぎない**スマートカジュアル〜セミフォーマル**がおすすめです！\n\n` +
+            `・男性：ジャケットスタイル、きれいめシャツ、スーツなど\n` +
+            `・女性：ワンピース、ブラウス＆パンツスタイルなど\n\n` +
+            `20歳の成人式のように気負わず、少しだけおしゃれをして大人になった再会を楽しみましょう✨`;
+
+        case 'kids_afterparty':
+          return `**【お子様連れ・二次会について】**\n\n` +
+            `■ **お子様連れ**：会場の安全面やスペースの都合上、原則として卒業生ご本人のみの参加を想定していますが、特別なご事情がある場合は個別にご相談ください。\n` +
+            `■ **二次会**：一次会終了後、近鉄四日市駅周辺にて希望者向けの二次会も企画予定です！\n\n` +
+            `※補足：${eventConfig.notes}`;
+
+        case 'rsvp_deadline':
+          return `**【出欠回答の期限・変更について】**\n\n` +
+            `■ **回答期限**：${eventConfig.deadline}\n` +
+            `■ **出欠フォーム**：${eventConfig.rsvpUrl}\n\n` +
+            `お仕事の都合や帰省予定などで「まだ確定できない（保留）」という場合も、まずはその旨をご連絡いただければ柔軟に対応いたします。回答後の変更もOKです！`;
+
+        default:
+          return null;
+      }
+    }
+
+    // キーワードマッチングによる高速・確実な回答判定
+    function matchLocalFaq(text) {
+      const normalized = text.toLowerCase();
+
+      if (/(幹事|直接|連絡|メッセージ|問い合わせ|問合せ|相談|個別)/.test(normalized)) {
+        return { type: 'form' };
+      }
+      if (/(日時|いつ|時間|場所|会場|どこ|駅|アクセス|四日市)/.test(normalized)) {
+        return { type: 'text', content: getFaqResponseById('datetime_venue') };
+      }
+      if (/(会費|参加費|料金|いくら|お金|支払|ペイペイ|paypay|現金|振込)/.test(normalized)) {
+        return { type: 'text', content: getFaqResponseById('fee_payment') };
+      }
+      if (/(服装|ドレスコード|スーツ|私服|着物|フォーマル|カジュアル|格好)/.test(normalized)) {
+        return { type: 'text', content: getFaqResponseById('dress_code') };
+      }
+      if (/(子連れ|子供|子ども|キッズ|二次会|2次会|三次会)/.test(normalized)) {
+        return { type: 'text', content: getFaqResponseById('kids_afterparty') };
+      }
+      if (/(出欠|期限|締切|締め切り|キャンセル|変更|保留|フォーム|申込|申し込み)/.test(normalized)) {
+        return { type: 'text', content: getFaqResponseById('rsvp_deadline') };
+      }
+      return null;
+    }
+
+    // ==========================================
+    // 3. Gemini API 連携（自由記述の質問への自然なAI回答）
+    // ==========================================
+    async function fetchGeminiResponse(userQuery) {
+      const apiKey = ""; // Canvasランタイム環境で自動注入されます
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+      const systemPrompt = `あなたは「三重県立四日市高等学校 平成16年度（2005年3月）卒業生 同窓会『NEO青春グラフィティ — 二度目の成人式 —』」の公式問合せコンシェルジュBotです。
+同級生（40歳前後の四高卒業生）からの質問に、礼儀正しくも温かみがあり、少しスタイリッシュで親しみやすいトーン（敬語ベースで「四高の仲間」としての歓迎感がある口調）で回答してください。
+
+【現在の同窓会設定データ】
+- イベント正式名称：NEO青春グラフィティ — 二度目の成人式 — 〜40歳の再会、三重県立四日市高等学校 平成16年度卒 同窓会〜
+- 開催日時：${eventConfig.dateTime}
+- 会場：${eventConfig.venue}
+- 参加費：${eventConfig.fee}
+- 出欠回答期限：${eventConfig.deadline}
+- 出欠フォームURL：${eventConfig.rsvpUrl}
+- 補足・企画概要：${eventConfig.notes}
+- 規模：100名規模を目指す大同窓会
+- 服装：スマートカジュアル〜セミフォーマル（二度目の成人式らしい少し大人のおしゃれ）
+
+【回答のルール】
+1. 上記データに記載がある事実は正確に伝えてください。「【要設定】」が含まれる項目については「現在幹事団にて最終調整中ですが、〇〇の予定です」と自然に案内してください。
+2. 記載にない具体的な質問（例：「一人参加でも大丈夫？」「駐車場はある？」「恩師は来る？」など）には、一般的なホテル・バンケット開催の同窓会として自然で前向きな回答をしつつ、確定事項ではない点は「詳細は決まり次第案内します」「個別の事情があれば下のボタンから幹事へ直接メッセージを送れます」とフォローしてください。
+3. スマホで読みやすいよう、3〜5文程度の簡潔な長さで、適度に改行や箇条書きを使ってください。`;
+
+      const contents = [
+        ...conversationHistory.slice(-6),
+        { role: 'user', parts: [{ text: userQuery }] }
+      ];
+
+      const payload = {
+        contents: contents,
+        systemInstruction: {
+          parts: [{ text: systemPrompt }]
+        }
+      };
+
+      // 指数バックオフ付きリトライ処理
+      const delays = [1000, 2000, 4000];
+      for (let attempt = 0; attempt <= delays.length; attempt++) {
+        try {
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+          }
+
+          const result = await response.json();
+          const candidateText = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (candidateText) {
+            return candidateText;
+          }
+          throw new Error('Empty response text');
+        } catch (err) {
+          if (attempt < delays.length) {
+            await new Promise((resolve) => setTimeout(resolve, delays[attempt]));
+          } else {
+            return `ご質問ありがとうございます！\nそちらの詳細につきましては、現在実行委員会にて最終確認を行っております。\n\nもし急ぎの確認や個別の事情がある場合は、下の「幹事へ直接メッセージを送る」からお気軽にご連絡ください！`;
+          }
+        }
+      }
+    }
+
+    // ==========================================
+    // 4. UIレンダリング & チャット操作
+    // ==========================================
+    const chatContainer = document.getElementById('chatContainer');
+    const quickChipsContainer = document.getElementById('quickChipsContainer');
+    const chatForm = document.getElementById('chatForm');
+    const userInput = document.getElementById('userInput');
+
+    // 簡易Markdown風フォーマット（**太字** と改行）を安全なHTMLに変換
+    function formatMessageText(text) {
+      const escaped = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      const bolded = escaped.replace(/\*\*(.+?)\*\*/g, '<strong class="text-gold-300 font-bold">$1</strong>');
+      return bolded.replace(/\n/g, '<br>');
+    }
+
+    function getCurrentTimeStr() {
+      const now = new Date();
+      return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    }
+
+    function appendBotMessage(text, options = {}) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'flex items-start gap-2.5 msg-animate';
+
+      wrapper.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-navy-800 border border-gold-500/40 flex items-center justify-center shrink-0 mt-0.5 shadow">
+          <span class="text-[10px] font-serif font-bold text-gold-400">四高</span>
+        </div>
+        <div class="max-w-[85%] space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-bold text-gold-400">実行委員会コンシェルジュ</span>
+            <span class="text-[10px] text-slate-500">${getCurrentTimeStr()}</span>
+          </div>
+          <div class="bg-navy-800/95 border border-slate-700/80 text-slate-100 text-sm leading-relaxed px-4 py-3 rounded-2xl rounded-tl-sm shadow-md">
+            ${formatMessageText(text)}
+            ${options.showDirectFormTrigger ? `
+              <div class="mt-3 pt-2.5 border-t border-slate-700/70">
+                <button type="button" onclick="openDirectInquiryForm()" class="w-full py-2 px-3 rounded-xl bg-navy-900 hover:bg-navy-950 text-gold-400 border border-gold-500/40 text-xs font-bold flex items-center justify-center gap-1.5 transition-all">
+                  <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+                  <span>幹事へ直接メッセージを送る</span>
+                </button>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+
+      chatContainer.appendChild(wrapper);
+      lucide.createIcons();
+      scrollToBottom();
+    }
+
+    function appendUserMessage(text) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'flex items-end justify-end gap-2 msg-animate';
+
+      wrapper.innerHTML = `
+        <div class="max-w-[82%] space-y-1 flex flex-col items-end">
+          <span class="text-[10px] text-slate-500 mr-1">${getCurrentTimeStr()}</span>
+          <div class="bg-gradient-to-br from-gold-500 to-amber-500 text-navy-950 font-medium text-sm leading-relaxed px-4 py-2.5 rounded-2xl rounded-tr-sm shadow-md">
+            ${formatMessageText(text).replace(/text-gold-300/g, 'text-navy-950')}
+          </div>
+        </div>
+      `;
+
+      chatContainer.appendChild(wrapper);
+      scrollToBottom();
+    }
+
+    function showTypingIndicator() {
+      const id = 'typingIndicator';
+      if (document.getElementById(id)) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.id = id;
+      wrapper.className = 'flex items-start gap-2.5 msg-animate';
+      wrapper.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-navy-800 border border-gold-500/40 flex items-center justify-center shrink-0 mt-0.5">
+          <span class="text-[10px] font-serif font-bold text-gold-400">四高</span>
+        </div>
+        <div class="bg-navy-800/90 border border-slate-700/80 px-4 py-3.5 rounded-2xl rounded-tl-sm flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-gold-400 typing-dot"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-gold-400 typing-dot"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-gold-400 typing-dot"></span>
+        </div>
+      `;
+      chatContainer.appendChild(wrapper);
+      scrollToBottom();
+    }
+
+    function removeTypingIndicator() {
+      const el = document.getElementById('typingIndicator');
+      if (el) el.remove();
+    }
+
+    function scrollToBottom() {
+      chatContainer.scrollTo({
+        top: chatContainer.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
+
+    // ==========================================
+    // 5. チャット内インライン「幹事への直接問合せフォーム」
+    // ==========================================
+    window.openDirectInquiryForm = function () {
+      const formId = 'directForm_' + Date.now();
+      const wrapper = document.createElement('div');
+      wrapper.className = 'flex items-start gap-2.5 msg-animate';
+
+      wrapper.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-navy-800 border border-gold-500/40 flex items-center justify-center shrink-0 mt-0.5">
+          <span class="text-[10px] font-serif font-bold text-gold-400">四高</span>
+        </div>
+        <div class="w-full max-w-[90%] bg-navy-800 border border-gold-500/40 rounded-2xl rounded-tl-sm p-4 shadow-xl space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-700 pb-2">
+            <span class="text-xs font-bold text-gold-400 flex items-center gap-1.5">
+              <i data-lucide="send" class="w-3.5 h-3.5"></i>
+              幹事団への個別メッセージ送信
+            </span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            個別のご質問、住所変更、出欠の相談などはこちらからお送りください。幹事メンバーへ直接届きます。
+          </p>
+          <form id="${formId}" class="space-y-2.5 text-xs">
+            <div>
+              <label class="block text-slate-300 font-medium mb-1">お名前（旧姓・現在の氏名） <span class="text-amber-400">*</span></label>
+              <input name="name" type="text" required placeholder="例：四日市（旧姓：鈴鹿） 太郎" class="w-full bg-navy-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:border-gold-500 focus:outline-none" />
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">3年次のクラス（任意）</label>
+                <input name="classRoom" type="text" placeholder="例：3年A組 / 1組" class="w-full bg-navy-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:border-gold-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">返信先（LINE名・メール等） <span class="text-amber-400">*</span></label>
+                <input name="contact" type="text" required placeholder="例：LINE名〇〇 / xxx@..." class="w-full bg-navy-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:border-gold-500 focus:outline-none" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-slate-300 font-medium mb-1">お問い合わせ・連絡内容 <span class="text-amber-400">*</span></label>
+              <textarea name="message" rows="3" required placeholder="例：途中参加になりそうですが大丈夫でしょうか？" class="w-full bg-navy-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:border-gold-500 focus:outline-none"></textarea>
+            </div>
+            <button type="submit" class="w-full py-2.5 rounded-xl font-bold bg-gradient-to-r from-gold-500 to-amber-500 text-navy-950 hover:opacity-95 transition-all shadow">
+              この内容で幹事へ送信する
+            </button>
+          </form>
+        </div>
+      `;
+
+      chatContainer.appendChild(wrapper);
+      lucide.createIcons();
+      scrollToBottom();
+
+      const formEl = document.getElementById(formId);
+      formEl.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(formEl);
+        const newInquiry = {
+          id: Date.now(),
+          name: formData.get('name').trim(),
+          classRoom: formData.get('classRoom').trim() || '未記入',
+          contact: formData.get('contact').trim(),
+          message: formData.get('message').trim(),
+          createdAt: new Date().toLocaleString('ja-JP'),
+        };
+
+        saveInquiries([newInquiry, ...inquiries]);
+
+        // フォームを送信完了カードに置き換え
+        const cardContainer = formEl.parentElement;
+        cardContainer.innerHTML = `
+          <div class="py-2 text-center space-y-2">
+            <div class="w-9 h-9 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
+              <i data-lucide="check" class="w-5 h-5"></i>
+            </div>
+            <p class="text-sm font-bold text-white">メッセージを受け付けました！</p>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              ${newInquiry.name} 様、ご連絡ありがとうございます。<br>
+              幹事団にて確認のうえ、ご指定の連絡先（${newInquiry.contact}）へ折り返しご連絡いたします。
+            </p>
+          </div>
+        `;
+        lucide.createIcons();
+        showToast('幹事宛てにメッセージを送信しました');
+      });
+    };
+
+    // ==========================================
+    // 6. ユーザー入力およびチップ選択のハンドリング
+    // ==========================================
+    async function handleUserQuery(text, presetId = null) {
+      if (!text.trim() || isWaitingResponse) return;
+
+      appendUserMessage(text);
+      conversationHistory.push({ role: 'user', parts: [{ text }] });
+
+      // プリセット「幹事へ直接メッセージ」の場合
+      if (presetId === 'direct_message') {
+        setTimeout(() => {
+          openDirectInquiryForm();
+        }, 250);
+        return;
+      }
+
+      // プリセットFAQの場合
+      if (presetId) {
+        const presetReply = getFaqResponseById(presetId);
+        if (presetReply) {
+          setTimeout(() => {
+            appendBotMessage(presetReply, { showDirectFormTrigger: true });
+            conversationHistory.push({ role: 'model', parts: [{ text: presetReply }] });
+          }, 250);
+          return;
+        }
+      }
+
+      // ローカルキーワード一致チェック
+      const localMatch = matchLocalFaq(text);
+      if (localMatch) {
+        if (localMatch.type === 'form') {
+          setTimeout(() => {
+            openDirectInquiryForm();
+          }, 250);
+          return;
+        }
+        setTimeout(() => {
+          appendBotMessage(localMatch.content, { showDirectFormTrigger: true });
+          conversationHistory.push({ role: 'model', parts: [{ text: localMatch.content }] });
+        }, 300);
+        return;
+      }
+
+      // 自由記述の場合はGemini APIへ問い合わせ
+      isWaitingResponse = true;
+      showTypingIndicator();
+      const aiReply = await fetchGeminiResponse(text);
+      removeTypingIndicator();
+      isWaitingResponse = false;
+
+      appendBotMessage(aiReply, { showDirectFormTrigger: true });
+      conversationHistory.push({ role: 'model', parts: [{ text: aiReply }] });
+    }
+
+    function renderQuickChips() {
+      quickChipsContainer.innerHTML = '';
+      QUICK_CHIPS.forEach((chip) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className =
+          'shrink-0 px-3 py-1.5 rounded-full text-xs font-medium bg-navy-800 hover:bg-navy-700 text-slate-200 hover:text-gold-300 border border-slate-700 hover:border-gold-500/50 transition-all active:scale-95';
+        btn.textContent = chip.label;
+        btn.addEventListener('click', () => {
+          handleUserQuery(chip.label, chip.id);
+        });
+        quickChipsContainer.appendChild(btn);
+      });
+    }
+
+    function initWelcomeMessage() {
+      chatContainer.innerHTML = '';
+      conversationHistory = [];
+      const welcomeText =
+        `四高 平成16年度卒のみなさん、こんにちは！\n` +
+        `**「NEO青春グラフィティ — 二度目の成人式 —」** 実行委員会です。\n\n` +
+        `40歳の節目に100名規模で集まる特別な同窓会について、気になることがあれば下のボタンをタップするか、自由にメッセージを送ってくださいね！`;
+      appendBotMessage(welcomeText);
+    }
+
+    chatForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = userInput.value.trim();
+      if (!val) return;
+      userInput.value = '';
+      handleUserQuery(val);
+    });
+
+    document.getElementById('resetChatBtn').addEventListener('click', () => {
+      initWelcomeMessage();
+      showToast('会話をリセットしました');
+    });
+
+    // ==========================================
+    // 7. 幹事用設定モーダル・管理ロジック
+    // ==========================================
+    const adminModal = document.getElementById('adminModal');
+    const openAdminBtn = document.getElementById('openAdminBtn');
+    const closeAdminBtn = document.getElementById('closeAdminBtn');
+
+    function populateAdminForm() {
+      document.getElementById('cfgDateTime').value = eventConfig.dateTime;
+      document.getElementById('cfgVenue').value = eventConfig.venue;
+      document.getElementById('cfgFee').value = eventConfig.fee;
+      document.getElementById('cfgDeadline').value = eventConfig.deadline;
+      document.getElementById('cfgRsvpUrl').value = eventConfig.rsvpUrl;
+      document.getElementById('cfgNotes').value = eventConfig.notes;
+      updateShareText();
+      renderInquiryList();
+    }
+
+    function updateShareText() {
+      const shareStr =
+`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NEO青春グラフィティ — 二度目の成人式 —
+〜40歳の再会、三重県立四日市高等学校 平成16年度卒 同窓会〜
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+四高を卒業してから20年余り。
+40歳という節目に、100名規模の大同窓会を開催します！
+
+■日時：${eventConfig.dateTime}
+■会場：${eventConfig.venue}
+■会費：${eventConfig.fee}
+■回答期限：${eventConfig.deadline}
+
+▼同窓会の質問・幹事への連絡（専用チャットボット）
+[ここにこのページのURLを貼り付け]
+
+連絡がつく四高の同級生へのシェアもよろしくお願いします！`;
+      document.getElementById('shareTextArea').value = shareStr;
+    }
+
+    function updateInquiryBadge() {
+      const badge = document.getElementById('inquiryBadge');
+      const modalCount = document.getElementById('modalInquiryCount');
+      modalCount.textContent = inquiries.length;
+      if (inquiries.length > 0) {
+        badge.textContent = inquiries.length;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
+
+    function renderInquiryList() {
+      const container = document.getElementById('inquiryListContainer');
+      if (inquiries.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-8 text-slate-500 text-xs bg-navy-950/50 rounded-2xl border border-slate-800">
+            現在、個別の受信メッセージはありません。
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = inquiries
+        .map(
+          (item) => `
+        <div class="bg-navy-950 border border-slate-800 rounded-2xl p-3.5 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-gold-400 text-xs">${item.name}（${item.classRoom}）</span>
+            <span class="text-[10px] text-slate-500">${item.createdAt}</span>
+          </div>
+          <p class="text-[11px] text-slate-400">連絡先：${item.contact}</p>
+          <p class="text-xs text-slate-200 bg-navy-900 p-2.5 rounded-xl border border-slate-800/80 leading-relaxed whitespace-pre-wrap">${item.message}</p>
+        </div>
+      `
+        )
+        .join('');
+    }
+
+    openAdminBtn.addEventListener('click', () => {
+      populateAdminForm();
+      adminModal.classList.remove('hidden');
+    });
+
+    closeAdminBtn.addEventListener('click', () => {
+      adminModal.classList.add('hidden');
+    });
+
+    adminModal.addEventListener('click', (e) => {
+      if (e.target === adminModal) {
+        adminModal.classList.add('hidden');
+      }
+    });
+
+    // タブ切り替え処理
+    document.querySelectorAll('.admin-tab').forEach((tabBtn) => {
+      tabBtn.addEventListener('click', () => {
+        document.querySelectorAll('.admin-tab').forEach((t) => {
+          t.classList.remove('border-gold-400', 'text-gold-400');
+          t.classList.add('border-transparent', 'text-slate-400');
+        });
+        tabBtn.classList.add('border-gold-400', 'text-gold-400');
+        tabBtn.classList.remove('border-transparent', 'text-slate-400');
+
+        const target = tabBtn.getAttribute('data-tab');
+        document.querySelectorAll('.admin-panel').forEach((panel) => {
+          panel.classList.add('hidden');
+        });
+        document.getElementById(`tab-${target}`).classList.remove('hidden');
+      });
+    });
+
+    document.getElementById('saveConfigBtn').addEventListener('click', () => {
+      saveConfig({
+        dateTime: document.getElementById('cfgDateTime').value.trim() || DEFAULT_CONFIG.dateTime,
+        venue: document.getElementById('cfgVenue').value.trim() || DEFAULT_CONFIG.venue,
+        fee: document.getElementById('cfgFee').value.trim() || DEFAULT_CONFIG.fee,
+        deadline: document.getElementById('cfgDeadline').value.trim() || DEFAULT_CONFIG.deadline,
+        rsvpUrl: document.getElementById('cfgRsvpUrl').value.trim() || DEFAULT_CONFIG.rsvpUrl,
+        notes: document.getElementById('cfgNotes').value.trim() || DEFAULT_CONFIG.notes,
+      });
+      updateShareText();
+      adminModal.classList.add('hidden');
+      showToast('開催情報を更新しました！チャット回答に反映されます');
+    });
+
+    document.getElementById('resetConfigBtn').addEventListener('click', () => {
+      saveConfig({ ...DEFAULT_CONFIG });
+      populateAdminForm();
+      showToast('初期設定に戻しました');
+    });
+
+    document.getElementById('clearInquiriesBtn').addEventListener('click', () => {
+      saveInquiries([]);
+      renderInquiryList();
+      showToast('受信履歴をクリアしました');
+    });
+
+    document.getElementById('copyShareBtn').addEventListener('click', () => {
+      const textarea = document.getElementById('shareTextArea');
+      textarea.select();
+      document.execCommand('copy');
+      showToast('LINE共有用の案内文をコピーしました');
+    });
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMessage').textContent = msg;
+      toast.classList.remove('opacity-0');
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+      }, 2600);
+    }
+
+    // 初期化実行
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderQuickChips();
+      updateInquiryBadge();
+      initWelcomeMessage();
+    });
+  </script>
+</body>
+</html>
